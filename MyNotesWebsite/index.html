@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+
+<h2>Login Page</h2>
+
+<input type="text" id="username" placeholder="Username"><br><br>
+
+<input type="password" id="password" placeholder="Password"><br><br>
+
+<button onclick="login()">Login</button>
+
+<script>
+localStorage.setItem("username", "N");
+localStorage.setItem("password", "1");
+
+function login() {
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if (
+        user === localStorage.getItem("username") &&
+        pass === localStorage.getItem("password")
+    ) {
+        window.location.href = "notes.html";
+    } else {
+        alert("Wrong Username or Password");
+    }
+}
+</script>
+
+</body>
+</html>

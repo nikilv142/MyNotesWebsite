@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes</title>
+</head>
+<body>
+
+<h2>My Notes</h2>
+
+<textarea id="note" rows="10" cols="50"></textarea>
+
+<br><br>
+
+<button onclick="saveNote()">Save Note</button>
+
+<script>
+
+document.getElementById("note").value =
+localStorage.getItem("myNote") || "";
+
+function saveNote() {
+    localStorage.setItem(
+        "myNote",
+        document.getElementById("note").value
+    );
+
+    alert("Note Saved");
+}
+
+</script>
+
+</body>
+</html>
