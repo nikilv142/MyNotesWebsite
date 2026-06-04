@@ -1,31 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Notes</title>
+    <title>My Notes</title>
 </head>
 <body>
 
 <h2>My Notes</h2>
 
-<textarea id="note" rows="10" cols="50"></textarea>
-
+<textarea id="note" rows="15" cols="60"></textarea>
 <br><br>
 
 <button onclick="saveNote()">Save Note</button>
 
-<script>
+<script type="module">
 
-document.getElementById("note").value =
-localStorage.getItem("myNote") || "";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-function saveNote() {
-    localStorage.setItem(
-        "myNote",
-        document.getElementById("note").value
-    );
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-    alert("Note Saved");
+const firebaseConfig = {
+  apiKey: "AIzaSyCsgQ4ujpzL7mabkjJCb3kTrGkm5u3JPT8",
+  authDomain: "mynoteswebsite-4bb56.firebaseapp.com",
+  projectId: "mynoteswebsite-4bb56",
+  storageBucket: "mynoteswebsite-4bb56.firebasestorage.app",
+  messagingSenderId: "909118327256",
+  appId: "1:909118327256:web:442fbb8616449148a88aad",
+  measurementId: "G-2KVKKPCBNH"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.saveNote = async function () {
+
+    const noteText = document.getElementById("note").value;
+
+    await setDoc(doc(db, "notes", "mainNote"), {
+        content: noteText
+    });
+
+    alert("Note Saved Online!");
+};
+
+async function loadNote() {
+
+    const docRef = doc(db, "notes", "mainNote");
+
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        document.getElementById("note").value =
+        docSnap.data().content;
+    }
 }
+
+loadNote();
 
 </script>
 
