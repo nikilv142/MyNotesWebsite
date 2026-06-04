@@ -25,6 +25,9 @@ function login() {
         user === localStorage.getItem("username") &&
         pass === localStorage.getItem("password")
     ) {
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("loginTime", Date.now());
+        
         window.location.href = "notes.html";
     } else {
         alert("Wrong Username or Password");
