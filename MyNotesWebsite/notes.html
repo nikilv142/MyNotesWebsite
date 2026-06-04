@@ -2,12 +2,40 @@
 <html>
 <head>
     <title>My Notes</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        textarea{
+            width: 80%;
+            height: 300px;
+            font-size: 16px;
+        }
+
+        button{
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #timer{
+            color: red;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
 
 <h2>My Notes</h2>
 
-<textarea id="note" rows="15" cols="60"></textarea>
+<div id="timer">Session expires in: 05:00</div>
+
+<textarea id="note"></textarea>
+
 <br><br>
 
 <button onclick="saveNote()">Save Note</button>
@@ -36,26 +64,78 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Check login session
+const loginTime = localStorage.getItem("loginTime");
+
+if (!loginTime) {
+    window.location.href = "index.html";
+}
+
+const fiveMinutes = 5 * 60 * 1000;
+
+if (Date.now() - loginTime > fiveMinutes) {
+    alert("Session Expired! Please login again.");
+
+    localStorage.removeItem("loginTime");
+
+    window.location.href = "index.html";
+}
+
+// Countdown Timer
+let timeLeft = 300;
+
+setInterval(() => {
+
+    let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
+
+    document.getElementById("timer").innerHTML =
+        `Session expires in: ${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+
+    timeLeft--;
+
+}, 1000);
+
+// Auto Logout
+setTimeout(() => {
+
+    alert("Session Expired!");
+
+    localStorage.removeItem("loginTime");
+
+    window.location.href = "index.html";
+
+}, 300000);
+
+// Save Note
 window.saveNote = async function () {
 
-    const noteText = document.getElementById("note").value;
+    const noteText =
+        document.getElementById("note").value;
 
-    await setDoc(doc(db, "notes", "mainNote"), {
-        content: noteText
-    });
+    await setDoc(
+        doc(db, "notes", "mainNote"),
+        {
+            content: noteText
+        }
+    );
 
     alert("Note Saved Online!");
 };
 
+// Load Note
 async function loadNote() {
 
-    const docRef = doc(db, "notes", "mainNote");
+    const docRef =
+        doc(db, "notes", "mainNote");
 
-    const docSnap = await getDoc(docRef);
+    const docSnap =
+        await getDoc(docRef);
 
     if (docSnap.exists()) {
+
         document.getElementById("note").value =
-        docSnap.data().content;
+            docSnap.data().content;
     }
 }
 
