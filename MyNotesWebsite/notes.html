@@ -71,17 +71,27 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Check login session
-const loginTime = localStorage.getItem("loginTime");
+const isLoggedIn =
+localStorage.getItem("isLoggedIn");
 
-if (!loginTime) {
-    window.location.href = "index.html";
+const loginTime =
+localStorage.getItem("loginTime");
+
+if (
+    isLoggedIn !== "true"
+    ||
+    !loginTime
+) {
+
+    window.location.href =
+    "index.html";
 }
-
 const oneMinute = 1 * 60 * 1000;
 
 if (Date.now() - loginTime > oneMinute) {
     alert("Session Expired! Please login again.");
 
+    localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("loginTime");
 
     window.location.href = "index.html";
@@ -107,6 +117,7 @@ setTimeout(() => {
 
     alert("Session Expired!");
 
+    localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("loginTime");
 
     window.location.href = "index.html";
