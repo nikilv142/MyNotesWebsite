@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Notes</title>
+    <title> VS IP Address </title>
     <style>
         body{
             font-family: Arial, sans-serif;
@@ -30,9 +30,9 @@
 </head>
 <body>
 
-<h2>My Notes</h2>
+<h2>VS IP Page</h2>
 
-<div id="timer">Session expires in: 05:00</div>
+<div id="timer">Session expires in: 01:00</div>
 
 <textarea id="note"></textarea>
 
@@ -71,9 +71,9 @@ if (!loginTime) {
     window.location.href = "index.html";
 }
 
-const fiveMinutes = 5 * 60 * 1000;
+const oneMinute = 1 * 60 * 1000;
 
-if (Date.now() - loginTime > fiveMinutes) {
+if (Date.now() - loginTime > oneMinute) {
     alert("Session Expired! Please login again.");
 
     localStorage.removeItem("loginTime");
@@ -105,7 +105,7 @@ setTimeout(() => {
 
     window.location.href = "index.html";
 
-}, 300000);
+}, 60000);
 
 // Save Note
 window.saveNote = async function () {
