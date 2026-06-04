@@ -34,8 +34,6 @@
 
 <h2>VS IP Page</h2>
 
-<div id="timer">Session expires in: 01:00</div>
-
 <textarea id="note"></textarea>
 
 <br><br>
@@ -96,21 +94,6 @@ if (Date.now() - loginTime > oneMinute) {
 
     window.location.href = "index.html";
 }
-
-// Countdown Timer
-let timeLeft = 60;
-
-setInterval(() => {
-
-    let minutes = Math.floor(timeLeft / 60);
-    let seconds = timeLeft % 60;
-
-    document.getElementById("timer").innerHTML =
-        `Session expires in: ${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
-
-    timeLeft--;
-
-}, 1000);
 
 // Auto Logout
 setTimeout(() => {
