@@ -1,38 +1,138 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+<title>Login</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+}
+
+.login-box{
+    width:350px;
+    padding:30px;
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    border-radius:15px;
+    text-align:center;
+    color:white;
+    box-shadow:0 8px 32px rgba(0,0,0,0.3);
+}
+
+.login-box h2{
+    margin-bottom:25px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:none;
+    border-radius:8px;
+    outline:none;
+    font-size:15px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:8px;
+    background:#ffffff;
+    color:#764ba2;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.footer{
+    margin-top:15px;
+    font-size:12px;
+    opacity:0.8;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h2>Login Page</h2>
+<div class="login-box">
 
-<input type="text" id="username" placeholder="Username"><br><br>
+    <h2>🔐 My Notes Login</h2>
 
-<input type="password" id="password" placeholder="Password"><br><br>
+    <input type="text"
+           id="username"
+           placeholder="Username">
 
-<button onclick="login()">Login</button>
+    <input type="password"
+           id="password"
+           placeholder="Password">
+
+    <button onclick="login()">
+        Login
+    </button>
+
+    <div class="footer">
+        Welcome Back
+    </div>
+
+</div>
 
 <script>
-localStorage.setItem("username", "N");
-localStorage.setItem("password", "1");
 
-function login() {
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
+localStorage.setItem("username","Niksa");
+localStorage.setItem("password","N@123");
 
-    if (
-        user === localStorage.getItem("username") &&
+function login(){
+
+    let user =
+    document.getElementById("username").value;
+
+    let pass =
+    document.getElementById("password").value;
+
+    if(
+        user === localStorage.getItem("username")
+        &&
         pass === localStorage.getItem("password")
-    ) {
-        localStorage.setItem("loggedIn", "true");
-        localStorage.setItem("loginTime", Date.now());
-        
-        window.location.href = "notes.html";
-    } else {
-        alert("Wrong Username or Password");
+    ){
+
+        localStorage.setItem(
+            "loginTime",
+            Date.now()
+        );
+
+        window.location.href =
+        "notes.html";
+
+    }else{
+
+        alert(
+            "Wrong Username or Password"
+        );
+
     }
 }
+
 </script>
 
 </body>
