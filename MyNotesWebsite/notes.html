@@ -38,7 +38,11 @@
 
 <br><br>
 
-<button onclick="saveNote()">Save Note</button>
+<button id="saveBtn"
+        onclick="saveNote()"
+        style="display:none;">
+    Save Note
+</button>
 
 <script type="module">
 
@@ -140,6 +144,29 @@ async function loadNote() {
 }
 
 loadNote();
+
+// Ctrl + K to show/hide Save button
+
+document.addEventListener("keydown", function(event){
+
+    if(event.ctrlKey &&
+       event.key.toLowerCase() === "k"){
+
+        event.preventDefault();
+
+        const btn =
+        document.getElementById("saveBtn");
+
+        if(btn.style.display === "none"){
+
+            btn.style.display = "inline-block";
+
+        }else{
+
+            btn.style.display = "none";
+        }
+    }
+});
 
 </script>
 
