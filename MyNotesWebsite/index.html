@@ -127,15 +127,17 @@ function login(){
         &&
         pass === localStorage.getItem("password")
     ){
-
+        localStorage.setItem(
+            "isLoggedIn",
+            "true"
+        );
+        
         localStorage.setItem(
             "loginTime",
             Date.now()
         );
-
         window.location.href =
-        "notes.html";
-
+            "notes.html";
     }else{
 
         alert(
