@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <title>Login</title>
 
@@ -81,6 +82,7 @@ button:hover{
     color:white;
     text-shadow:0 2px 5px rgba(0,0,0,0.3);
 }
+
 </style>
 
 </head>
@@ -91,9 +93,9 @@ button:hover{
 
     <h2>🔐 VS IP Address Login</h2>
 
-    <input type="text"
+    <input type="email"
            id="username"
-           placeholder="Username">
+           placeholder="Email">
 
     <input type="password"
            id="password"
@@ -109,41 +111,86 @@ button:hover{
 
 </div>
 
-<script>
+<script type="module">
 
-localStorage.setItem("username","Niksa");
-localStorage.setItem("password","N@123");
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-function login(){
+import {
+  getAuth,
+  signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-    let user =
+// Firebase Config
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyCsgQ4ujpzL7mabkjJCb3kTrGkm5u3JPT8",
+
+  authDomain:
+  "mynoteswebsite-4bb56.firebaseapp.com",
+
+  projectId:
+  "mynoteswebsite-4bb56",
+
+  storageBucket:
+  "mynoteswebsite-4bb56.firebasestorage.app",
+
+  messagingSenderId:
+  "909118327256",
+
+  appId:
+  "1:909118327256:web:442fbb8616449148a88aad",
+
+  measurementId:
+  "G-2KVKKPCBNH"
+};
+
+// Initialize Firebase
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+// Login Function
+
+window.login = async function(){
+
+    let email =
     document.getElementById("username").value;
 
-    let pass =
+    let password =
     document.getElementById("password").value;
 
-    if(
-        user === localStorage.getItem("username")
-        &&
-        pass === localStorage.getItem("password")
-    ){
+    try{
+
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
         localStorage.setItem(
             "isLoggedIn",
             "true"
         );
-        
+
         localStorage.setItem(
             "loginTime",
             Date.now()
         );
+
         window.location.href =
-            "notes.html";
-    }else{
+        "notes.html";
+
+    }catch(error){
 
         alert(
-            "Please Type Correct Username & Password"
+            "Invalid Email or Password"
         );
-
     }
 }
 
