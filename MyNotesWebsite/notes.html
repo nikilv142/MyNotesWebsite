@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title> VS IP Address </title>
+    <title>VS IP Address</title>
+
     <style>
+
         body{
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 50px;
             min-height:100vh;
-            
+
             background:
                 linear-gradient(
                     135deg,
@@ -16,73 +19,92 @@
                     #302b63,
                     #24243e
                 );
+
             color:white;
+        }
+
+        h2{
+            font-size:32px;
+            margin-bottom:25px;
+            text-shadow:0 0 10px rgba(255,255,255,0.3);
         }
 
         textarea{
+
             width:85%;
             height:400px;
+
             padding:15px;
+
             font-size:18px;
+
             border-radius:15px;
-            
+
             border:1px solid rgba(255,255,255,0.2);
-            
+
             background:rgba(255,255,255,0.08);
-            
+
             backdrop-filter:blur(10px);
-            
+
             color:white;
-            
+
             outline:none;
-            
+
             box-shadow:0 8px 32px rgba(0,0,0,0.3);
+
+            resize:none;
+        }
+
+        textarea::placeholder{
+            color:#cccccc;
         }
 
         button{
+
             padding:12px 25px;
+
             font-size:16px;
+
             margin-top:10px;
-            
+
             border:none;
+
             border-radius:10px;
-            
+
             background:
                 linear-gradient(
                     135deg,
                     #00c6ff,
                     #0072ff
                 );
+
             color:white;
-            
+
             font-weight:bold;
-            
+
             cursor:pointer;
-            
+
             transition:0.3s;
-            
+
             box-shadow:0 0 15px rgba(0,114,255,0.5);
         }
-        
+
         button:hover{
-            
+
             transform:scale(1.05);
-            
+
             box-shadow:0 0 25px rgba(0,114,255,0.8);
         }
 
-        #timer{
-            color: red;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
     </style>
 </head>
+
 <body>
 
 <h2>VS IP Page</h2>
 
-<textarea id="note"></textarea>
+<textarea id="note"
+placeholder="Write your secure notes here..."></textarea>
 
 <br><br>
 
@@ -94,72 +116,90 @@
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 import {
   getFirestore,
   doc,
   setDoc,
   getDoc
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+// Firebase Config
 
 const firebaseConfig = {
+
   apiKey: "AIzaSyCsgQ4ujpzL7mabkjJCb3kTrGkm5u3JPT8",
-  authDomain: "mynoteswebsite-4bb56.firebaseapp.com",
-  projectId: "mynoteswebsite-4bb56",
-  storageBucket: "mynoteswebsite-4bb56.firebasestorage.app",
-  messagingSenderId: "909118327256",
-  appId: "1:909118327256:web:442fbb8616449148a88aad",
-  measurementId: "G-2KVKKPCBNH"
+
+  authDomain:
+  "mynoteswebsite-4bb56.firebaseapp.com",
+
+  projectId:
+  "mynoteswebsite-4bb56",
+
+  storageBucket:
+  "mynoteswebsite-4bb56.firebasestorage.app",
+
+  messagingSenderId:
+  "909118327256",
+
+  appId:
+  "1:909118327256:web:442fbb8616449148a88aad",
+
+  measurementId:
+  "G-2KVKKPCBNH"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Initialize Firebase
 
-// Check login session
-const isLoggedIn =
-localStorage.getItem("isLoggedIn");
+const app =
+initializeApp(firebaseConfig);
 
-const loginTime =
-localStorage.getItem("loginTime");
+const db =
+getFirestore(app);
 
-if (
-    isLoggedIn !== "true"
-    ||
-    !loginTime
-) {
+const auth =
+getAuth(app);
 
-    window.location.href =
-    "index.html";
-}
-const oneMinute = 1 * 60 * 1000;
+// Firebase Auth Check
 
-if (Date.now() - loginTime > oneMinute) {
-    alert("Session Expired! Please login again.");
+onAuthStateChanged(auth, (user) => {
 
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("loginTime");
+    if (!user) {
 
-    window.location.href = "index.html";
-}
+        window.location.href =
+        "index.html";
+    }
+});
 
-// Auto Logout
-setTimeout(() => {
+// Auto Logout After 1 Minute
+
+setTimeout(async () => {
 
     alert("Session Expired!");
 
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("loginTime");
+    await signOut(auth);
 
-    window.location.href = "index.html";
+    window.location.href =
+    "index.html";
 
-}, 60000);
+},60000);
 
 // Save Note
+
 window.saveNote = async function () {
 
     const noteText =
-        document.getElementById("note").value;
+    document.getElementById("note").value;
 
     await setDoc(
         doc(db, "notes", "mainNote"),
@@ -172,24 +212,25 @@ window.saveNote = async function () {
 };
 
 // Load Note
+
 async function loadNote() {
 
     const docRef =
-        doc(db, "notes", "mainNote");
+    doc(db, "notes", "mainNote");
 
     const docSnap =
-        await getDoc(docRef);
+    await getDoc(docRef);
 
     if (docSnap.exists()) {
 
         document.getElementById("note").value =
-            docSnap.data().content;
+        docSnap.data().content;
     }
 }
 
 loadNote();
 
-// Ctrl + K to show/hide Save button
+// Ctrl + K to Show/Hide Save Button
 
 document.addEventListener("keydown", function(event){
 
